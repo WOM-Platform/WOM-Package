@@ -23,6 +23,7 @@ dependencies:
   sqflite:
   http:
   simple_animations: ^1.3.0
+  meta:
 
 dev_dependencies:
   flutter_test:

@@ -1,5 +1,5 @@
 import 'package:meta/meta.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:sqflite/sqlite_api.dart';
 import 'package:wom_package/src/models/aim.dart';
 
 class AimDbHelper {

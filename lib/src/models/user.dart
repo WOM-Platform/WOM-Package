@@ -7,7 +7,7 @@ class User {
 
   final String privateKey;
   final String publicKey;
-  final int id;
+  final String id;
   final String name;
   final String url;
   final String error;
@@ -25,7 +25,7 @@ class User {
       : this.privateKey = map[dbPrivateKey],
         this.publicKey = map[dbPublicKey],
         this.name = map[dbName],
-        this.id = map[dbId],
+        this.id = map[dbId].toString(),
         this.url = map[dbUrl],
         this.error = null;
 }
