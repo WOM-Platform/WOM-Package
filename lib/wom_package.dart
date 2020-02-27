@@ -1,6 +1,5 @@
 export 'src/models/aim.dart';
 export 'src/models/user.dart';
-export 'src/models/wom.dart';
 export 'src/helpers/http_helper.dart';
 export 'src/helpers/aim/aim_database/aim_database.dart';
 export 'src/helpers/user/user_repository.dart';
@@ -17,3 +16,4 @@ export 'src/blocs/authentication/authentication_event.dart';
 export 'src/blocs/login/bloc.dart';
 export 'src/screens/login/login_screen.dart';
 export 'src/utils/config.dart';
+export 'src/models/wom_status.dart';
