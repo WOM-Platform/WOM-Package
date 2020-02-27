@@ -1,9 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:simple_animations/simple_animations/animation_progress.dart';
-import 'package:simple_animations/simple_animations/multi_track_tween.dart';
-import 'package:simple_animations/simple_animations/rendering.dart';
+import 'package:simple_animations/simple_animations.dart';
 
 class Particles extends StatefulWidget {
   final int numberOfParticles;
@@ -93,7 +91,7 @@ class ParticlePainter extends CustomPainter {
       var progress = particle.animationProgress.progress(time);
       final animation = particle.tween.transform(progress);
       final position =
-          Offset(animation["x"] * size.width, animation["y"] * size.height);
+      Offset(animation["x"] * size.width, animation["y"] * size.height);
       canvas.drawCircle(position, size.width * 0.2 * particle.size, paint);
     });
   }

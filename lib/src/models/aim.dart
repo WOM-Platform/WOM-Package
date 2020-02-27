@@ -13,7 +13,7 @@ class Aim {
   List<Aim> children = [];
   Map<String, dynamic> titles;
 
-  String get title => titles["it"] ?? null;
+  String get title => titles["en"] ?? null;
 
   Aim() {
     this.titles = Map();

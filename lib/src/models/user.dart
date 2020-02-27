@@ -1,12 +1,12 @@
 class User {
   static String dbPrivateKey = 'privateKey';
   static String dbId = 'id';
-  static String dbPublicKey = 'publicKey';
+//  static String dbPublicKey = 'publicKey';
   static String dbUrl = 'url';
   static String dbName = 'name';
 
   final String privateKey;
-  final String publicKey;
+//  final String publicKey;
   final String id;
   final String name;
   final String url;
@@ -14,7 +14,7 @@ class User {
 
   User({
     this.privateKey,
-    this.publicKey,
+//    this.publicKey,
     this.id,
     this.name,
     this.url,
@@ -23,7 +23,7 @@ class User {
 
   User.fromMap(Map<String, dynamic> map)
       : this.privateKey = map[dbPrivateKey],
-        this.publicKey = map[dbPublicKey],
+//        this.publicKey = map[dbPublicKey],
         this.name = map[dbName],
         this.id = map[dbId].toString(),
         this.url = map[dbUrl],

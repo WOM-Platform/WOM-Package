@@ -1,26 +1,25 @@
-import 'dart:io';
-
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:wom_package/wom_package.dart';
+import 'package:wom_package/src/models/aim.dart';
+import 'package:wom_package/src/utils/config.dart';
 
 class AimApiProvider {
   //TODO HTTP GET LAST CHANGE
   checkUpdate() async {
     print("AimApiProvider: checkUpdate()");
-    try{
+    try {
       return await getAims();
-    }catch(ex){
+    } catch (ex) {
       return Future.value(null);
     }
   }
 
   Future<List<Aim>> getAims() async {
     print("AimApiProvider: getAims()");
-    final url = "http://wom.social/api/v1/aims?format=flat";
+    final url = "${Config.baseUrl}aims?format=flat";
     final resp = await http.get(
       url,
-      headers: {HttpHeaders.contentTypeHeader: "application/json"},
+      headers: {"content-type": "application/json"},
     );
     if (resp.statusCode == 200) {
       //decode response body into json

@@ -1,11 +1,14 @@
+import 'package:wom_package/src/utils/config.dart';
+
 class DeepLinkBuilder {
   final String otc;
   final TransactionType type;
+//  final String baseUrl;
 
   DeepLinkBuilder(this.otc, this.type);
 
   String build() {
-    return "https://wom.social/${type.toString().toLowerCase().replaceAll("transactiontype.", "")}/$otc";
+    return "${Config.deepBaseUrl}${type.toString().toLowerCase().replaceAll("transactiontype.", "")}/$otc";
   }
 }
 
