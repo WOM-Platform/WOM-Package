@@ -1,0 +1,1 @@
+enum WomStatus { ON, OFF }
