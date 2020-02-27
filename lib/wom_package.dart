@@ -17,3 +17,4 @@ export 'src/blocs/login/bloc.dart';
 export 'src/screens/login/login_screen.dart';
 export 'src/utils/config.dart';
 export 'src/models/wom_status.dart';
+export 'src/models/request_status.dart';
