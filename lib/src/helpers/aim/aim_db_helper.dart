@@ -3,7 +3,6 @@ import 'package:sqflite/sqlite_api.dart';
 import 'package:wom_package/src/models/aim.dart';
 
 class AimDbHelper {
-
   static final AimDbHelper _aimDb = new AimDbHelper._internal();
 
   AimDbHelper._internal();
@@ -59,7 +58,7 @@ class AimDbHelper {
     }
   }
 
-  Future<int> insert({@required Database db,Aim aim}) async {
+  Future<int> insert({@required Database db, Aim aim}) async {
     print("AimDbHelper: insert()");
     int result;
     await db.transaction((Transaction txn) async {

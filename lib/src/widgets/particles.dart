@@ -93,7 +93,7 @@ class ParticlePainter extends CustomPainter {
       var progress = particle.animationProgress.progress(time);
       final animation = particle.tween.transform(progress);
       final position =
-      Offset(animation["x"] * size.width, animation["y"] * size.height);
+          Offset(animation["x"] * size.width, animation["y"] * size.height);
       canvas.drawCircle(position, size.width * 0.2 * particle.size, paint);
     });
   }
