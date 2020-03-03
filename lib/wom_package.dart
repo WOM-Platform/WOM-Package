@@ -20,3 +20,6 @@ export 'src/models/wom_status.dart';
 export 'src/models/request_status.dart';
 export 'src/models/request_verification_response.dart';
 export 'src/models/user_type.dart';
+export 'src/models/actor.dart';
+export 'src/models/pos.dart';
+export 'src/models/instrument.dart';
