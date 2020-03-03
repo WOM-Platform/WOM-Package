@@ -20,8 +20,6 @@ class LoginBox extends StatefulWidget {
 }
 
 class _LoginBoxState extends State<LoginBox> {
-  final _usernameController = TextEditingController();
-  final _passwordController = TextEditingController();
   FocusNode _focusNode = FocusNode();
 
   LoginBloc get _loginBloc => widget.loginBloc;
@@ -93,7 +91,7 @@ class _LoginBoxState extends State<LoginBox> {
                     Spacer(),
                     Spacer(),
                     TextField(
-                      controller: _usernameController,
+                      controller: _loginBloc.usernameController,
 //                      keyboardType: TextInputType.emailAddress,
 //                      onChanged: (value) {},
 //                      inputFormatters: [
@@ -109,7 +107,7 @@ class _LoginBoxState extends State<LoginBox> {
                     Spacer(),
                     TextField(
                       obscureText: true,
-                      controller: _passwordController,
+                      controller: _loginBloc.passwordController,
                       decoration: InputDecoration(
                         hintText: "Password",
                         prefixIcon: Icon(Icons.lock),
@@ -159,24 +157,17 @@ class _LoginBoxState extends State<LoginBox> {
 
   _onLoginButtonPressed() {
 //    final mail = _usernameController.text;
-    final password = _passwordController.text;
+    final password = _loginBloc.passwordController.text;
 //    bool isValidMail = EmailSubmitRegexValidator().isValid(mail);
 //    print(isValidMail);
     if (password.length > 5) {
       FocusScope.of(context).requestFocus(new FocusNode());
       _loginBloc.dispatch(LoginButtonPressed(
-        username: _usernameController.text,
-        password: _passwordController.text,
+        username: _loginBloc.usernameController.text,
+        password: _loginBloc.passwordController.text,
       ));
     } else {
       FocusScope.of(context).requestFocus(_focusNode);
     }
-  }
-
-  @override
-  void dispose() {
-    _usernameController.dispose();
-    _passwordController.dispose();
-    super.dispose();
   }
 }

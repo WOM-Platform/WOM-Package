@@ -44,8 +44,9 @@ class UserRepository {
     await secureStorage.delete(key: 'actors');
   }
 
-  Future<void> persistToken(User user) async {
+  Future<void> persistToken(User user, String email) async {
     final mmkv = await MmkvFlutter.getInstance();
+    mmkv.setString('email', email);
     mmkv.setString(User.dbName, user.name);
     mmkv.setString(User.dbSurname, user.surname);
     final array = user.actors.map((actor) => actor.toMap()).toList();
@@ -54,25 +55,29 @@ class UserRepository {
   }
 
   Future<User> readUser() async {
-      final mmkv = await MmkvFlutter.getInstance();
-      final name = await mmkv.getString(User.dbName);
-      final surname = await mmkv.getString(User.dbSurname);
-      if(name == null || surname == null){
-        return null;
-      }
-      final actorsJsonArray = await secureStorage.read(key: User.dbPrivateKey);
-      final actorsArray = json.decode(actorsJsonArray);
-      List<Actor> actors;
-      if (this._userType == UserType.Instrument) {
-        actors = actorsArray
-            .map((instrument) => Instrument.fromMap(instrument))
-            .toList();
-      } else {
-        actors = actorsArray.map((pos) => Pos.fromMap(pos)).toList();
-      }
-      return User(name, surname, actors);
+    final mmkv = await MmkvFlutter.getInstance();
+    final name = await mmkv.getString(User.dbName);
+    final surname = await mmkv.getString(User.dbSurname);
+    if (name == null || surname == null) {
+      return null;
+    }
+    final actorsJsonArray = await secureStorage.read(key: User.dbPrivateKey);
+    final actorsArray = json.decode(actorsJsonArray);
+    List<Actor> actors;
+    if (this._userType == UserType.Instrument) {
+      actors = actorsArray
+          .map<Instrument>((instrument) => Instrument.fromMap(instrument))
+          .toList();
+    } else {
+      actors = actorsArray.map<Pos>((pos) => Pos.fromMap(pos)).toList();
+    }
+    return User(name, surname, actors);
+  }
 
-
+  Future<String> readEmail() async {
+    final mmkv = await MmkvFlutter.getInstance();
+    final email = await mmkv.getString('email');
+    return email;
   }
 
   Future<bool> hasToken() async {

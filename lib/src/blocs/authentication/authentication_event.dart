@@ -15,13 +15,15 @@ class LoggedIn extends AuthenticationEvent {
 //  final String publicKey;
 //  final String privateKey;
   final User user;
+  final String email;
 
   LoggedIn({
     @required this.user,
+    @required this.email,
   }) : super([user]);
 
   @override
-  String toString() => 'LoggedIn { token: ${user.name} }';
+  String toString() => 'LoggedIn { name : ${user.name} }';
 }
 
 class LoggedOut extends AuthenticationEvent {

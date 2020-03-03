@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:wom_package/src/blocs/authentication/bloc.dart';
 import 'package:wom_package/src/helpers/user/user_repository.dart';
@@ -12,11 +13,18 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final AuthenticationBloc authenticationBloc;
   User user;
 
+  final usernameController = TextEditingController();
+  final passwordController = TextEditingController();
+
   LoginBloc({
     @required this.userRepository,
     @required this.authenticationBloc,
   })  : assert(userRepository != null),
-        assert(authenticationBloc != null);
+        assert(authenticationBloc != null) {
+    userRepository.readEmail().then((value) {
+      usernameController.text = value ?? '';
+    });
+  }
 
   LoginState get initialState => LoginInitial();
 
@@ -30,12 +38,20 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           password: event.password,
         );
         print(user.name);
-        authenticationBloc.dispatch(LoggedIn(user: user));
+        authenticationBloc
+            .dispatch(LoggedIn(user: user, email: event.username));
         yield LoginSuccessfull();
       } catch (ex) {
         print(ex);
         yield LoginFailure(error: "Username e/o password non validi!");
       }
     }
+  }
+
+  @override
+  void dispose() {
+    usernameController.dispose();
+    passwordController.dispose();
+    super.dispose();
   }
 }
