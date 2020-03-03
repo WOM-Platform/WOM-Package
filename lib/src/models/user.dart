@@ -1,33 +1,30 @@
+import 'actor.dart';
+
 class User {
   static String dbPrivateKey = 'privateKey';
   static String dbId = 'id';
+
 //  static String dbPublicKey = 'publicKey';
   static String dbUrl = 'url';
   static String dbName = 'name';
+  static String dbSurname = 'surname';
 
-  final String privateKey;
-//  final String publicKey;
-  final String id;
+  final List<Actor> actors;
   final String name;
-  final String url;
-  final String error;
+  final String surname;
 
-  User({
-    this.privateKey,
-//    this.publicKey,
-    this.id,
+  User(
     this.name,
-    this.url,
-    this.error,
-  });
+    this.surname,
+    this.actors,
+  );
 
-  User.fromMap(Map<String, dynamic> map)
-      : this.privateKey = map[dbPrivateKey],
-//        this.publicKey = map[dbPublicKey],
-        this.name = map[dbName],
-        this.id = map[dbId].toString(),
-        this.url = map[dbUrl],
-        this.error = null;
+  actorsToMap() {
+    final map = {};
+  }
+
+//  User.fromMap(Map<String, dynamic> map, String actorKey)
+//      : this.name = map['name'],
+//        this.surname = map['surname'],
+//       this.actors = List.from<>(map[actorKey]);
 }
-
-enum UserType { Instrument, POS }

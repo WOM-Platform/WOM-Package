@@ -24,19 +24,17 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   Stream<LoginState> mapEventToState(LoginEvent event) async* {
     if (event is LoginButtonPressed) {
       yield LoginLoading();
-
-      user = await userRepository.authenticate(
-        username: event.username,
-        password: event.password,
-      );
-
-      if (user.error != null) {
-        print(user.error);
-        yield LoginFailure(error: "Username e/o password non validi!");
-      } else {
+      try {
+        user = await userRepository.authenticate(
+          username: event.username,
+          password: event.password,
+        );
+        print(user.name);
         authenticationBloc.dispatch(LoggedIn(user: user));
         yield LoginSuccessfull();
-        print(user.name);
+      } catch (ex) {
+        print(ex);
+        yield LoginFailure(error: "Username e/o password non validi!");
       }
     }
   }

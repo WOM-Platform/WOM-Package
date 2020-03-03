@@ -1,5 +1,3 @@
-import 'dart:html';
-
 class AimDatabase {
   static final AimDatabase _aimDb = new AimDatabase._internal();
 

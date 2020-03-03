@@ -1,4 +1,5 @@
 import 'package:wom_package/src/models/user.dart';
+import 'package:wom_package/src/models/user_type.dart';
 
 class UserRepository {
   final UserType _userType;
@@ -10,13 +11,9 @@ class UserRepository {
     String password,
   }) async {
     try {
-      return User(
-          name: 'prova_web',
-          id: "1",
-          privateKey: 'private_key_web',
-          url: 'url_web');
+      return User('name', 'surname', []);
     } catch (ex) {
-      return User(error: ex.toString());
+      throw ex;
     }
   }
 
@@ -30,11 +27,7 @@ class UserRepository {
 
   Future<User> readUser() async {
     print("readUser_web");
-    return User(
-        name: 'prova_web',
-        id: "1",
-        privateKey: 'private_key_web',
-        url: 'url_web');
+    return User('name', 'surname', []);
   }
 
   Future<bool> hasToken() async {
