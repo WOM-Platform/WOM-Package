@@ -19,3 +19,4 @@ export 'src/utils/config.dart';
 export 'src/models/wom_status.dart';
 export 'src/models/request_status.dart';
 export 'src/models/request_verification_response.dart';
+export 'src/models/user_type.dart';
