@@ -27,10 +27,10 @@ class UserRepository {
       List<Actor> actors;
       if (this._userType == UserType.Instrument) {
         actors = map[type]
-            .map((instrument) => Instrument.fromMap(instrument))
+            .map<Instrument>((instrument) => Instrument.fromMap(instrument))
             .toList();
       } else {
-        actors = map[type].map((pos) => Pos.fromMap(pos)).toList();
+        actors = map[type].map<Pos>((pos) => Pos.fromMap(pos)).toList();
       }
       return User(map[User.dbName], map[User.dbSurname], actors);
     } catch (ex) {
