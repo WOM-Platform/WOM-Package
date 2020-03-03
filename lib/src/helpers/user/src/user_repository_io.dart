@@ -54,20 +54,25 @@ class UserRepository {
   }
 
   Future<User> readUser() async {
-    final mmkv = await MmkvFlutter.getInstance();
-    final name = await mmkv.getString(User.dbName);
-    final surname = await mmkv.getString(User.dbSurname);
-    final actorsJsonArray = await secureStorage.read(key: User.dbPrivateKey);
-    final actorsArray = json.decode(actorsJsonArray);
-    List<Actor> actors;
-    if (this._userType == UserType.Instrument) {
-      actors = actorsArray
-          .map((instrument) => Instrument.fromMap(instrument))
-          .toList();
-    } else {
-      actors = actorsArray.map((pos) => Pos.fromMap(pos)).toList();
-    }
-    return User(name, surname, actors);
+      final mmkv = await MmkvFlutter.getInstance();
+      final name = await mmkv.getString(User.dbName);
+      final surname = await mmkv.getString(User.dbSurname);
+      if(name == null || surname == null){
+        return null;
+      }
+      final actorsJsonArray = await secureStorage.read(key: User.dbPrivateKey);
+      final actorsArray = json.decode(actorsJsonArray);
+      List<Actor> actors;
+      if (this._userType == UserType.Instrument) {
+        actors = actorsArray
+            .map((instrument) => Instrument.fromMap(instrument))
+            .toList();
+      } else {
+        actors = actorsArray.map((pos) => Pos.fromMap(pos)).toList();
+      }
+      return User(name, surname, actors);
+
+
   }
 
   Future<bool> hasToken() async {

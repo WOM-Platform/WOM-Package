@@ -1,5 +1,6 @@
 import 'package:meta/meta.dart';
 import 'package:wom_package/src/helpers/user/user_repository.dart';
+import 'package:wom_package/src/models/user.dart';
 import 'authentication_event.dart';
 import 'authentication_state.dart';
 import 'package:bloc/bloc.dart';
@@ -19,10 +20,10 @@ class AuthenticationBloc
     AuthenticationEvent event,
   ) async* {
     if (event is AppStarted) {
-      final bool hasToken = await userRepository.hasToken();
+      final User user = await userRepository.readUser();
 
-      if (hasToken) {
-        yield AuthenticationAuthenticated();
+      if (user != null) {
+        yield AuthenticationAuthenticated(user);
       } else {
         yield AuthenticationUnauthenticated();
       }
@@ -31,7 +32,7 @@ class AuthenticationBloc
     if (event is LoggedIn) {
 //      yield AuthenticationLoading();
       await userRepository.persistToken(event.user);
-      yield AuthenticationAuthenticated();
+      yield AuthenticationAuthenticated(event.user);
     }
 
     if (event is LoggedOut) {
