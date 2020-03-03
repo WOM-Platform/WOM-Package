@@ -20,11 +20,15 @@ class AuthenticationBloc
     AuthenticationEvent event,
   ) async* {
     if (event is AppStarted) {
-      final User user = await userRepository.readUser();
-
-      if (user != null) {
-        yield AuthenticationAuthenticated(user);
-      } else {
+      try {
+        final User user = await userRepository.readUser();
+        if (user != null) {
+          yield AuthenticationAuthenticated(user);
+        } else {
+          yield AuthenticationUnauthenticated();
+        }
+      } catch (ex) {
+        print(ex.toString());
         yield AuthenticationUnauthenticated();
       }
     }
