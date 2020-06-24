@@ -26,7 +26,7 @@ class _LoginBoxState extends State<LoginBox> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<LoginEvent, LoginState>(
+    return BlocBuilder<LoginBloc, LoginState>(
       bloc: _loginBloc,
       builder: (
         BuildContext context,
@@ -162,7 +162,7 @@ class _LoginBoxState extends State<LoginBox> {
 //    print(isValidMail);
     if (password.length > 5) {
       FocusScope.of(context).requestFocus(new FocusNode());
-      _loginBloc.dispatch(LoginButtonPressed(
+      _loginBloc.add(LoginButtonPressed(
         username: _loginBloc.usernameController.text,
         password: _loginBloc.passwordController.text,
       ));

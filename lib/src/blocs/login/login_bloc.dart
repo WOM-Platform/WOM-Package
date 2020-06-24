@@ -38,8 +38,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           password: event.password,
         );
         print(user.name);
-        authenticationBloc
-            .dispatch(LoggedIn(user: user, email: event.username));
+        authenticationBloc.add(LoggedIn(user: user, email: event.username));
         yield LoginSuccessfull();
       } catch (ex) {
         print(ex);
@@ -49,9 +48,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   @override
-  void dispose() {
+  Future<void> close() {
     usernameController.dispose();
     passwordController.dispose();
-    super.dispose();
+    return super.close();
   }
 }
