@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:wom_package/src/models/actor.dart';
 import 'package:wom_package/src/models/instrument.dart';
+import 'package:wom_package/src/models/merchant.dart';
 import 'package:wom_package/src/models/pos.dart';
 import 'package:wom_package/src/models/user.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -32,7 +33,25 @@ class UserRepository {
       } else {
         actors = map[type].map<Pos>((pos) => Pos.fromMap(pos)).toList();
       }
-      return User(map[User.dbName], map[User.dbSurname], actors);
+      return User(map[User.dbName], map[User.dbSurname], actors, []);
+    } catch (ex) {
+      throw ex;
+    }
+  }
+
+  Future<User> authenticatePos({
+    String username,
+    String password,
+  }) async {
+    try {
+      final bytes = utf8.encode('$username:$password');
+      final base64String = Base64Encoder().convert(bytes);
+      final body = await HttpHelper.authenticate(base64String, 'pos');
+      final map = json.decode(body);
+      final merchants =
+          map['merchants'].map<Merchant>((m) => Merchant.fromMap(m)).toList();
+      final actors = map['pos'].map<Pos>((pos) => Pos.fromMap(pos)).toList();
+      return User(map[User.dbName], map[User.dbSurname], [], merchants);
     } catch (ex) {
       throw ex;
     }
@@ -55,6 +74,13 @@ class UserRepository {
   }
 
   Future<User> readUser() async {
+    if (this._userType == UserType.Instrument) {
+      return readInstrumentUser();
+    }
+    return readPosUser();
+  }
+
+  Future<User> readInstrumentUser() async {
     final mmkv = await MmkvFlutter.getInstance();
     final name = await mmkv.getString(User.dbName);
     final surname = await mmkv.getString(User.dbSurname);
@@ -71,7 +97,20 @@ class UserRepository {
     } else {
       actors = actorsArray.map<Pos>((pos) => Pos.fromMap(pos)).toList();
     }
-    return User(name, surname, actors);
+    return User(name, surname, actors, []);
+  }
+
+  Future<User> readPosUser() async {
+    final mmkv = await MmkvFlutter.getInstance();
+    final name = await mmkv.getString(User.dbName);
+    final surname = await mmkv.getString(User.dbSurname);
+    if (name == null || surname == null) {
+      return null;
+    }
+    final actorsJsonArray = await secureStorage.read(key: User.dbPrivateKey);
+    final actorsArray = json.decode(actorsJsonArray);
+    final merchants = actorsArray.map<Pos>((m) => Merchant.fromMap(m)).toList();
+    return User(name, surname, [], merchants);
   }
 
   Future<String> readEmail() async {

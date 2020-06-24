@@ -1,3 +1,5 @@
+import 'package:wom_package/src/models/merchant.dart';
+
 import 'actor.dart';
 
 class User {
@@ -10,6 +12,7 @@ class User {
   static String dbSurname = 'surname';
 
   final List<Actor> actors;
+  final List<Merchant> merchants;
   final String name;
   final String surname;
 
@@ -17,11 +20,8 @@ class User {
     this.name,
     this.surname,
     this.actors,
+    this.merchants,
   );
-
-  actorsToMap() {
-    final map = {};
-  }
 
 //  User.fromMap(Map<String, dynamic> map, String actorKey)
 //      : this.name = map['name'],
