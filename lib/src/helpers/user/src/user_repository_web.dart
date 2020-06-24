@@ -11,7 +11,7 @@ class UserRepository {
     String password,
   }) async {
     try {
-      return User('name', 'surname', [],[]);
+      return User('name', 'surname', [], []);
     } catch (ex) {
       throw ex;
     }
@@ -27,7 +27,7 @@ class UserRepository {
 
   Future<User> readUser() async {
     print("readUser_web");
-    return User('name', 'surname', [],[]);
+    return User('name', 'surname', [], []);
   }
 
   Future<bool> hasToken() async {

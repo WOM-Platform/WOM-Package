@@ -23,3 +23,4 @@ export 'src/models/user_type.dart';
 export 'src/models/actor.dart';
 export 'src/models/pos.dart';
 export 'src/models/instrument.dart';
+export 'src/models/merchant.dart';
