@@ -78,7 +78,7 @@ class UserRepository {
     final jsonArray = json.encode(array);
     await secureStorage.write(key: 'actors', value: jsonArray);
     await secureStorage.write(key: 'password', value: password);
-    await mmkv.setInt('lastLogin', DateTime.now().millisecondsSinceEpoch);
+    await mmkv.setLong('lastLogin', DateTime.now().millisecondsSinceEpoch);
   }
 
   Future<User> readUser() async {
@@ -91,7 +91,7 @@ class UserRepository {
     }
 
     final lastLogin =
-        DateTime.fromMillisecondsSinceEpoch(await mmkv.getInt('lastLogin'));
+        DateTime.fromMillisecondsSinceEpoch(await mmkv.getLong('lastLogin'));
 
     if (DateTime.now().difference(lastLogin).inMinutes > 3600) {
       final password = await secureStorage.read(key: 'password');
