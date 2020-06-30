@@ -23,7 +23,7 @@ class HttpHelper {
   }
 
   static Future<String> authenticate(String auth, String type) async {
-    final response = await http.get(
+    final response = await http.post(
       '${Config.authBaseUrl}auth/$type',
       headers: {
         "authorization": "Basic $auth",

@@ -25,6 +25,9 @@ class UserRepository {
       final type = this._userType == UserType.Instrument ? 'sources' : 'pos';
       final body = await HttpHelper.authenticate(base64String, type);
       final map = json.decode(body);
+      final name = map[User.dbName];
+      final surname = map[User.dbSurname];
+      final email = map[User.dbEmail];
       List<Actor> actors;
       if (this._userType == UserType.Instrument) {
         actors = map[type]
@@ -33,7 +36,7 @@ class UserRepository {
       } else {
         actors = map[type].map<Pos>((pos) => Pos.fromMap(pos)).toList();
       }
-      return User(map[User.dbName], map[User.dbSurname], actors, []);
+      return User(name, surname, email, actors, []);
     } catch (ex) {
       throw ex;
     }
@@ -48,10 +51,12 @@ class UserRepository {
       final base64String = Base64Encoder().convert(bytes);
       final body = await HttpHelper.authenticate(base64String, 'pos');
       final map = json.decode(body);
+      final name = map[User.dbName];
+      final surname = map[User.dbSurname];
+      final email = map[User.dbEmail];
       final merchants =
           map['merchants'].map<Merchant>((m) => Merchant.fromMap(m)).toList();
-      final actors = map['pos'].map<Pos>((pos) => Pos.fromMap(pos)).toList();
-      return User(map[User.dbName], map[User.dbSurname], [], merchants);
+      return User(name, surname, email, [], merchants);
     } catch (ex) {
       throw ex;
     }
@@ -65,9 +70,9 @@ class UserRepository {
 
   Future<void> persistToken(User user, String email) async {
     final mmkv = await MmkvFlutter.getInstance();
-    mmkv.setString('email', email);
     mmkv.setString(User.dbName, user.name);
     mmkv.setString(User.dbSurname, user.surname);
+    mmkv.setString(User.dbEmail, user.email);
     final array = user.actors.map((actor) => actor.toMap()).toList();
     final jsonArray = json.encode(array);
     await secureStorage.write(key: 'actors', value: jsonArray);
@@ -84,6 +89,7 @@ class UserRepository {
     final mmkv = await MmkvFlutter.getInstance();
     final name = await mmkv.getString(User.dbName);
     final surname = await mmkv.getString(User.dbSurname);
+    final email = await mmkv.getString(User.dbEmail);
     if (name == null || surname == null) {
       return null;
     }
@@ -97,20 +103,21 @@ class UserRepository {
     } else {
       actors = actorsArray.map<Pos>((pos) => Pos.fromMap(pos)).toList();
     }
-    return User(name, surname, actors, []);
+    return User(name, surname, email, actors, []);
   }
 
   Future<User> readPosUser() async {
     final mmkv = await MmkvFlutter.getInstance();
     final name = await mmkv.getString(User.dbName);
     final surname = await mmkv.getString(User.dbSurname);
+    final email = await mmkv.getString(User.dbEmail);
     if (name == null || surname == null) {
       return null;
     }
     final actorsJsonArray = await secureStorage.read(key: User.dbPrivateKey);
     final actorsArray = json.decode(actorsJsonArray);
     final merchants = actorsArray.map<Pos>((m) => Merchant.fromMap(m)).toList();
-    return User(name, surname, [], merchants);
+    return User(name, surname, email, [], merchants);
   }
 
   Future<String> readEmail() async {

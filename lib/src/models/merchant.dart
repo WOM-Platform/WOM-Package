@@ -4,9 +4,10 @@ class Merchant {
   final String id;
   final String name;
   final String address;
-  final String cap;
+  final String zipCode;
   final String city;
-  final String vatNumber;
+  final String country;
+  final String fiscalCode;
   final String profileImgUrl;
   final List<Pos> posList;
 
@@ -14,9 +15,10 @@ class Merchant {
       {this.id,
       this.name,
       this.address,
-      this.cap,
+      this.zipCode,
       this.city,
-      this.vatNumber,
+      this.country,
+      this.fiscalCode,
       this.profileImgUrl,
       this.posList});
 
@@ -28,9 +30,10 @@ class Merchant {
           id == other.id &&
           name == other.name &&
           address == other.address &&
-          cap == other.cap &&
+          zipCode == other.zipCode &&
           city == other.city &&
-          vatNumber == other.vatNumber &&
+          country == other.country &&
+          fiscalCode == other.fiscalCode &&
           profileImgUrl == other.profileImgUrl &&
           posList == other.posList);
 
@@ -39,9 +42,10 @@ class Merchant {
       id.hashCode ^
       name.hashCode ^
       address.hashCode ^
-      cap.hashCode ^
+      zipCode.hashCode ^
       city.hashCode ^
-      vatNumber.hashCode ^
+      country.hashCode ^
+      fiscalCode.hashCode ^
       profileImgUrl.hashCode ^
       posList.hashCode;
 
@@ -51,11 +55,12 @@ class Merchant {
         ' id: $id,' +
         ' name: $name,' +
         ' address: $address,' +
-        ' cap: $cap,' +
+        ' zipCode: $zipCode,' +
         ' city: $city,' +
-        ' vatNumber: $vatNumber,' +
+        ' country: $country,' +
+        ' fiscalCode: $fiscalCode,' +
         ' profileImgUrl: $profileImgUrl,' +
-        ' posList: $posList,' +
+        ' pos: $posList,' +
         '}';
   }
 
@@ -63,9 +68,10 @@ class Merchant {
     String id,
     String name,
     String address,
-    String cap,
+    String zipCode,
     String city,
-    String vatNumber,
+    String country,
+    String fiscalCode,
     String profileImgUrl,
     List<Pos> posList,
   }) {
@@ -73,9 +79,10 @@ class Merchant {
       id: id ?? this.id,
       name: name ?? this.name,
       address: address ?? this.address,
-      cap: cap ?? this.cap,
+      zipCode: zipCode ?? this.zipCode,
       city: city ?? this.city,
-      vatNumber: vatNumber ?? this.vatNumber,
+      country: country ?? this.country,
+      fiscalCode: fiscalCode ?? this.fiscalCode,
       profileImgUrl: profileImgUrl ?? this.profileImgUrl,
       posList: posList ?? this.posList,
     );
@@ -86,11 +93,12 @@ class Merchant {
       'id': this.id,
       'name': this.name,
       'address': this.address,
-      'cap': this.cap,
+      'zipCode': this.zipCode,
       'city': this.city,
-      'vatNumber': this.vatNumber,
+      'country': this.country,
+      'fiscalCode': this.fiscalCode,
       'profileImgUrl': this.profileImgUrl,
-      'posList': this.posList,
+      'pos': this.posList,
     };
   }
 
@@ -99,11 +107,12 @@ class Merchant {
       id: map['id'] as String,
       name: map['name'] as String,
       address: map['address'] as String,
-      cap: map['cap'] as String,
+      zipCode: map['zipCode'] as String,
       city: map['city'] as String,
-      vatNumber: map['vatNumber'] as String,
+      country: map['country'] as String,
+      fiscalCode: map['fiscalCode'] as String,
       profileImgUrl: map['profileImgUrl'] as String,
-      posList: map['posList'] as List<Pos>,
+      posList: map['pos'] as List<Pos>,
     );
   }
 }

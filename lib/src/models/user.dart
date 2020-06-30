@@ -10,15 +10,18 @@ class User {
   static String dbUrl = 'url';
   static String dbName = 'name';
   static String dbSurname = 'surname';
+  static String dbEmail = 'email';
 
   final List<Actor> actors;
-  final List<Merchant> merchants;
+  List<Merchant> merchants;
   final String name;
   final String surname;
+  final String email;
 
   User(
     this.name,
     this.surname,
+    this.email,
     this.actors,
     this.merchants,
   );
