@@ -38,7 +38,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           password: event.password,
         );
         print(user.name);
-        authenticationBloc.add(LoggedIn(user: user, email: event.username));
+        authenticationBloc.add(LoggedIn(
+            user: user, email: event.username, password: event.password));
         yield LoginSuccessfull();
       } catch (ex) {
         print(ex);

@@ -62,11 +62,11 @@ class UserRepository {
     await secureStorage.delete(key: 'actors');
   }
 
-  Future<void> persistToken(User user, String email) async {
+  Future<void> persistToken(User user, String email, String password) async {
     final mmkv = await MmkvFlutter.getInstance();
-    mmkv.setString(User.dbName, user.name);
-    mmkv.setString(User.dbSurname, user.surname);
-    mmkv.setString(User.dbEmail, user.email);
+    await mmkv.setString(User.dbName, user.name);
+    await mmkv.setString(User.dbSurname, user.surname);
+    await mmkv.setString(User.dbEmail, user.email);
 
     List<Map<String, dynamic>> array;
     if (_userType == UserType.Instrument) {
@@ -77,23 +77,35 @@ class UserRepository {
 
     final jsonArray = json.encode(array);
     await secureStorage.write(key: 'actors', value: jsonArray);
+    await secureStorage.write(key: 'password', value: password);
+    await mmkv.setInt('lastLogin', DateTime.now().millisecondsSinceEpoch);
   }
 
   Future<User> readUser() async {
-    if (this._userType == UserType.Instrument) {
-      return readInstrumentUser();
-    }
-    return readPosUser();
-  }
-
-  Future<User> readInstrumentUser() async {
     final mmkv = await MmkvFlutter.getInstance();
     final name = await mmkv.getString(User.dbName);
     final surname = await mmkv.getString(User.dbSurname);
     final email = await mmkv.getString(User.dbEmail);
-    if (name == null || surname == null) {
+    if (name == null || surname == null || email == null) {
       return null;
     }
+
+    final lastLogin =
+        DateTime.fromMillisecondsSinceEpoch(await mmkv.getInt('lastLogin'));
+
+    if (DateTime.now().difference(lastLogin).inMinutes > 3600) {
+      final password = await secureStorage.read(key: 'password');
+      if (password == null) return null;
+      return authenticate(username: email, password: password);
+    }
+    if (this._userType == UserType.Instrument) {
+      return readInstrumentUser(name, surname, email);
+    }
+    return readPosUser(name, surname, email);
+  }
+
+  Future<User> readInstrumentUser(
+      String name, String surname, String email) async {
     final actorsJsonArray = await secureStorage.read(key: 'actors');
     final actorsArray = json.decode(actorsJsonArray);
     List<Actor> actors;
@@ -107,18 +119,11 @@ class UserRepository {
     return User(name, surname, email, actors, []);
   }
 
-  Future<User> readPosUser() async {
-    final mmkv = await MmkvFlutter.getInstance();
-    final name = await mmkv.getString(User.dbName);
-    final surname = await mmkv.getString(User.dbSurname);
-    final email = await mmkv.getString(User.dbEmail);
-    if (name == null || surname == null) {
-      return null;
-    }
+  Future<User> readPosUser(String name, String surname, String email) async {
     final actorsJsonArray = await secureStorage.read(key: 'actors');
     final actorsArray = json.decode(actorsJsonArray);
-    final merchants =
-        List<Merchant>.from(actorsArray.map<Merchant>((m) => Merchant.fromMap(m)));
+    final merchants = List<Merchant>.from(
+        actorsArray.map<Merchant>((m) => Merchant.fromMap(m)));
     return User(name, surname, email, [], merchants);
   }
 
