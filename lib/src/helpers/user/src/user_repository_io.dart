@@ -67,7 +67,14 @@ class UserRepository {
     mmkv.setString(User.dbName, user.name);
     mmkv.setString(User.dbSurname, user.surname);
     mmkv.setString(User.dbEmail, user.email);
-    final array = user.actors.map((actor) => actor.toMap()).toList();
+
+    List<Map<String, dynamic>> array;
+    if (_userType == UserType.Instrument) {
+      array = user.actors.map((actor) => actor.toMap()).toList();
+    } else {
+      array = user.merchants.map((merchant) => merchant.toMap()).toList();
+    }
+
     final jsonArray = json.encode(array);
     await secureStorage.write(key: 'actors', value: jsonArray);
   }
@@ -87,7 +94,7 @@ class UserRepository {
     if (name == null || surname == null) {
       return null;
     }
-    final actorsJsonArray = await secureStorage.read(key: User.dbPrivateKey);
+    final actorsJsonArray = await secureStorage.read(key: 'actors');
     final actorsArray = json.decode(actorsJsonArray);
     List<Actor> actors;
     if (this._userType == UserType.Instrument) {
@@ -108,7 +115,7 @@ class UserRepository {
     if (name == null || surname == null) {
       return null;
     }
-    final actorsJsonArray = await secureStorage.read(key: User.dbPrivateKey);
+    final actorsJsonArray = await secureStorage.read(key: 'actors');
     final actorsArray = json.decode(actorsJsonArray);
     final merchants = actorsArray.map<Pos>((m) => Merchant.fromMap(m)).toList();
     return User(name, surname, email, [], merchants);

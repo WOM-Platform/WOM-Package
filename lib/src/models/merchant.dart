@@ -98,7 +98,7 @@ class Merchant {
       'country': this.country,
       'fiscalCode': this.fiscalCode,
       'profileImgUrl': this.profileImgUrl,
-      'pos': this.posList,
+      'pos': this.posList.map((pos) => pos.toMap()).toList(),
     };
   }
 
