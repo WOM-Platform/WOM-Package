@@ -118,7 +118,7 @@ class UserRepository {
     final actorsJsonArray = await secureStorage.read(key: 'actors');
     final actorsArray = json.decode(actorsJsonArray);
     final merchants =
-        List<Merchant>.from(actorsArray.map<Pos>((m) => Merchant.fromMap(m)));
+        List<Merchant>.from(actorsArray.map<Merchant>((m) => Merchant.fromMap(m)));
     return User(name, surname, email, [], merchants);
   }
 
