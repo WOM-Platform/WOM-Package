@@ -51,8 +51,8 @@ class UserRepository {
     final name = map[User.dbName];
     final surname = map[User.dbSurname];
     final email = map[User.dbEmail];
-    final merchants =
-        map['merchants'].map<Merchant>((m) => Merchant.fromMap(m)).toList();
+    final merchants = List<Merchant>.from(
+        map['merchants'].map<Merchant>((m) => Merchant.fromMap(m)));
     return User(name, surname, email, [], merchants);
   }
 
