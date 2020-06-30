@@ -112,7 +112,9 @@ class Merchant {
       country: map['country'] as String,
       fiscalCode: map['fiscalCode'] as String,
       profileImgUrl: map['profileImgUrl'] as String,
-      posList: map['pos'] as List<Pos>,
+      posList: map['pos'] != null
+          ? List.from(map['pos'].map<Pos>((m) => Pos.fromMap(m)))
+          : [],
     );
   }
 }
