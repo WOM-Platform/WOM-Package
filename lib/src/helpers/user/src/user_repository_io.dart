@@ -22,44 +22,38 @@ class UserRepository {
     try {
       final bytes = utf8.encode('$username:$password');
       final base64String = Base64Encoder().convert(bytes);
-      final type = this._userType == UserType.Instrument ? 'sources' : 'merchant';
-      final body = await HttpHelper.authenticate(base64String, type);
-      final map = json.decode(body);
-      final name = map[User.dbName];
-      final surname = map[User.dbSurname];
-      final email = map[User.dbEmail];
-      List<Actor> actors;
-      if (this._userType == UserType.Instrument) {
-        actors = map[type]
-            .map<Instrument>((instrument) => Instrument.fromMap(instrument))
-            .toList();
+      if (_userType == UserType.POS) {
+        return authenticatePos(base64String: base64String);
       } else {
-        actors = map[type].map<Pos>((pos) => Pos.fromMap(pos)).toList();
+        return authenticateInstrument(base64String: base64String);
       }
-      return User(name, surname, email, actors, []);
     } catch (ex) {
       throw ex;
     }
   }
 
-  Future<User> authenticatePos({
-    String username,
-    String password,
-  }) async {
-    try {
-      final bytes = utf8.encode('$username:$password');
-      final base64String = Base64Encoder().convert(bytes);
-      final body = await HttpHelper.authenticate(base64String, 'merchant');
-      final map = json.decode(body);
-      final name = map[User.dbName];
-      final surname = map[User.dbSurname];
-      final email = map[User.dbEmail];
-      final merchants =
-          map['merchants'].map<Merchant>((m) => Merchant.fromMap(m)).toList();
-      return User(name, surname, email, [], merchants);
-    } catch (ex) {
-      throw ex;
-    }
+  Future<User> authenticateInstrument({String base64String}) async {
+    final type = 'sources';
+    final body = await HttpHelper.authenticate(base64String, type);
+    final map = json.decode(body);
+    final name = map[User.dbName];
+    final surname = map[User.dbSurname];
+    final email = map[User.dbEmail];
+    List<Actor> actors = map[type]
+        .map<Instrument>((instrument) => Instrument.fromMap(instrument))
+        .toList();
+    return User(name, surname, email, actors, []);
+  }
+
+  Future<User> authenticatePos({String base64String}) async {
+    final body = await HttpHelper.authenticate(base64String, 'merchant');
+    final map = json.decode(body);
+    final name = map[User.dbName];
+    final surname = map[User.dbSurname];
+    final email = map[User.dbEmail];
+    final merchants =
+        map['merchants'].map<Merchant>((m) => Merchant.fromMap(m)).toList();
+    return User(name, surname, email, [], merchants);
   }
 
   Future<void> deleteToken() async {
