@@ -4,7 +4,6 @@ enum Flavor {
 }
 
 class Config {
-
   static Flavor appFlavor;
 
   static String get baseUrl {

@@ -22,7 +22,7 @@ class UserRepository {
     try {
       final bytes = utf8.encode('$username:$password');
       final base64String = Base64Encoder().convert(bytes);
-      final type = this._userType == UserType.Instrument ? 'sources' : 'pos';
+      final type = this._userType == UserType.Instrument ? 'sources' : 'merchant';
       final body = await HttpHelper.authenticate(base64String, type);
       final map = json.decode(body);
       final name = map[User.dbName];
@@ -49,7 +49,7 @@ class UserRepository {
     try {
       final bytes = utf8.encode('$username:$password');
       final base64String = Base64Encoder().convert(bytes);
-      final body = await HttpHelper.authenticate(base64String, 'pos');
+      final body = await HttpHelper.authenticate(base64String, 'merchant');
       final map = json.decode(body);
       final name = map[User.dbName];
       final surname = map[User.dbSurname];
