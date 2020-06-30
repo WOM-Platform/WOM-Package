@@ -21,11 +21,11 @@ class Config {
   static String get authBaseUrl {
     switch (appFlavor) {
       case Flavor.RELEASE:
-        return 'https://wom.social/api/v1/';
+        return 'https://wom.social/api/v2/';
       case Flavor.DEVELOPMENT:
-        return 'https://dev.wom.social/api/v1/';
+        return 'https://dev.wom.social/api/v2/';
       default:
-        return 'https://wom.social/api/v1/';
+        return 'https://wom.social/api/v2/';
     }
   }
 
